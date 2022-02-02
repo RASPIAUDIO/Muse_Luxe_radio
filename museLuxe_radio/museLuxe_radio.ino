@@ -710,7 +710,7 @@ printf(" SPIFFS used bytes  ====> %d of %d\n",(int)SPIFFS.usedBytes(), (int)SPIF
 // power enable
     gpio_reset_pin(PA);
     gpio_set_direction(PA, GPIO_MODE_OUTPUT);   
-    gpio_set_pull_mode(PA, GPIO_PULLUP_ONLY);   
+//    gpio_set_pull_mode(PA, GPIO_PULLUP_ONLY);   
     gpio_set_level(PA, 1); 
 
 // init audio
@@ -862,11 +862,12 @@ void loop() {
     if((b2 > 0) && (b2 > longK) )
     {
       clearBuffer();
-      sendBuffer();
-      strip.SetPixelColor(0, BLACK);
+      sendBuffer();                               //screen erased
+      strip.SetPixelColor(0, BLACK);              //led off
       strip.Show();
+      gpio_set_level(PA, 0);                      // power disable  
       delay(1000);
-      esp_sleep_enable_ext0_wakeup(STOP,LOW);     
+      esp_sleep_enable_ext0_wakeup(STOP,LOW);     // mute button to restart
       esp_deep_sleep_start();
     }
 // time
